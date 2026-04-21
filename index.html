@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tiffany Gong — Data Analyst</title>
+<title>Tiffany Gong — Data & Business Intelligence Analyst</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%235B4CF5'/><text x='50' y='72' font-family='serif' font-size='48' font-weight='bold' text-anchor='middle' fill='white'>tf</text></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -60,10 +61,61 @@
 
   /* AVATAR WITH PHOTO */
   .hero-visual { display: flex; justify-content: center; }
-  .avatar-ring { width: 280px; height: 280px; border-radius: 50%; border: 2px solid rgba(91,76,245,0.3); display: flex; align-items: center; justify-content: center; position: relative; }
-  .avatar-ring::before { content: ''; position: absolute; inset: -12px; border-radius: 50%; border: 1px dashed rgba(91,76,245,0.2); animation: spin 20s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
-  .avatar-inner { width: 240px; height: 240px; border-radius: 50%; overflow: hidden; background: linear-gradient(135deg, rgba(91,76,245,0.3), rgba(0,201,167,0.3)); display: flex; align-items: center; justify-content: center; }
+@keyframes avatar-entrance {
+  0% { opacity: 0; transform: scale(0.85); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+.avatar-ring {
+  width: 260px; height: 260px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+  z-index: 1;
+  animation: avatar-entrance 1s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s both;
+}
+.avatar-ring::before {
+  content: '';
+  position: absolute;
+  inset: -14px;
+  border-radius: 55% 55% 55% 55% / 55% 55% 55% 55%; 
+  background: transparent;
+  border: 2.5px solid transparent;
+  background-image: linear-gradient(#13131A, #13131A),
+    conic-gradient(
+      from 0deg,
+      #5B4CF5,
+      #9B8BF8,
+      #C084FC,
+      #9B8BF8,
+      #5B4CF5
+    );
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  animation: spin 8s linear infinite;
+  z-index: -1;
+}
+.avatar-ring::after {
+  content: '';
+  position: absolute;
+  inset: -20px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(139,108,252,0.12) 0%, transparent 70%);
+  z-index: -1;
+}
+.avatar-inner {
+  animation: avatar-entrance 1s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s both;
+  z-index: 2;
+  position: relative;
+}
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes spin-reverse { to { transform: rotate(-360deg); } }
+  @keyframes avatar-entrance { 
+  0% { opacity: 0; transform: scale(0.85); }
+  100% { opacity: 1; transform: scale(1); }
+  }
+  .avatar-inner { width: 240px; height: 240px; border-radius: 50%; overflow: hidden; background: linear-gradient(135deg, rgba(91,76,245,0.3), rgba(0,201,167,0.3)); display: flex; align-items: center; justify-content: center; animation: avatar-entrance 1s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s both;}
   .avatar-inner img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; display: block; }
   .avatar-placeholder { font-family: var(--font-handwriting); font-size: 4rem; font-weight: 700; color: rgba(255,255,255,0.8); }
 
@@ -211,7 +263,7 @@
         <span class="typewriter-line accent" id="tw-line2"></span>
         <span class="typewriter-line" id="tw-line3"></span>
       </h1>
-      <p id="hero-p">Master's in AI & Machine Learning (Schulich) · BI & Analytics · Retail · Finance. Turning messy data into decisions people actually use.</p>
+      <p id="hero-p">Master's in AI Management · BI & Analytics · Retail · Finance. Turning messy data into decisions people actually use.</p>
       <div class="hero-btns" id="hero-btns">
         <a href="#projects" class="btn-primary">View my work</a>
         <a href="#contact" class="btn-secondary">Get in touch</a>
@@ -224,7 +276,7 @@
             <!-- 替换照片: 把下面 img 的 src 改成你的照片路径，比如 src="photo.jpg" -->
             <!-- 如果暂时没有照片，删掉 img 标签，保留 avatar-placeholder -->
             <!-- <span class="avatar-placeholder">TG</span> -->
-            <img src="nobg.jpg" alt="Tiffany Gong">
+            <img src="nobg.jpg" alt="Tiffany">
           </div>
         </div>
         <div class="float-badge badge-tl"><span class="dot dot-green"></span>Available for roles</div>
@@ -250,20 +302,22 @@
     </div>
     <div class="stat-grid">
       <div class="stat-card">
-        <div class="stat-num" data-count="350" data-suffix="%">0%</div>
+        <div class="stat-num" data-count="350" data-suffix="%" style="color:#ad9df0;">0%</div>
         <div class="stat-label">Sales growth tied to KPI dashboards</div>
       </div>
       <div class="stat-card">
-        <div class="stat-num" data-count="10+" data-suffix="+">1+</div>
+        <div class="stat-num" data-count="10" data-suffix="+" style="color:#ad9df0;">0+</div>
         <div class="stat-label">End-to-end BI dashboards built</div>
       </div>
       <div class="stat-card">
-        <div class="stat-num">MMAI</div>
+        <div class="stat-num" style="color:#8d9af0;">MMAI</div>
         <div class="stat-label">Schulich School of Business</div>
       </div>
       <div class="stat-card">
-        <div class="stat-num">UBC</div>
+        <div class="stat-num" style="color:#8d9af0;">UBC</div>
         <div class="stat-label">B.Sc. Computer Science</div>
+      </div>
+    </div>
       </div>
     </div>
   </div>
@@ -645,9 +699,9 @@ drawParticles();
 
 // ── TYPEWRITER ─────────────────────────────────────────────────
 const lines = [
-  { el: document.getElementById('tw-line1'), text: "Hi, I'm Tiffany." },
-  { el: document.getElementById('tw-line2'), text: "Data tells stories." },
-  { el: document.getElementById('tw-line3'), text: "I translate them." }
+  { el: document.getElementById('tw-line1'), text: "Hi, I'm Tiffany!" },
+  { el: document.getElementById('tw-line2'), text: "Data tells stories" },
+  { el: document.getElementById('tw-line3'), text: "I translate them" }
 ];
 let lineIdx = 0, charIdx = 0;
 const cursor = document.createElement('span');
@@ -678,14 +732,18 @@ const observer = new IntersectionObserver(entries => {
     if (!e.isIntersecting) return;
     e.target.classList.add('visible');
     e.target.querySelectorAll('[data-count]').forEach(el => {
-      const target = parseInt(el.dataset.count), suffix = el.dataset.suffix || '';
-      let cur = 0; const step = Math.ceil(target / 60);
-      const t = setInterval(() => {
-        cur = Math.min(cur + step, target);
-        el.textContent = cur + suffix;
-        if (cur >= target) clearInterval(t);
-      }, 20);
-    });
+    const target = parseInt(el.dataset.count), suffix = el.dataset.suffix || '';
+    let cur = 0;
+    const duration = 1200;
+    const steps = 20;
+    const step = target / steps;
+    const interval = duration / steps;
+    const t = setInterval(() => {
+      cur = Math.min(cur + step, target);
+      el.textContent = Math.round(cur) + suffix;
+      if (cur >= target) clearInterval(t);
+    }, interval);
+  });
     e.target.querySelectorAll('.skill-fill[data-width]').forEach(bar => {
       setTimeout(() => { bar.style.width = bar.dataset.width + '%'; }, 200);
     });
