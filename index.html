@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tiff Gong — Data Analyst</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@700;800&family=DM+Sans:wght@0,300;0,400;0,500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --accent: #5B4CF5;
+    --accent2: #00C9A7;
+    --accent3: #FF6B6B;
+    --bg: #0B0B0F;
+    --surface: #13131A;
+    --surface2: #1C1C27;
+    --text: #F0EFF8;
+    --muted: #8B8A9F;
+    --border: rgba(255,255,255,0.07);
+    --font-display: 'Outfit', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font-body); font-size: 16px; line-height: 1.7; overflow-x: hidden; }
+
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 1.2rem 3rem; display: flex; justify-content: space-between; align-items: center; background: rgba(11,11,15,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+  .nav-logo { font-family: var(--font-display); font-weight: 800; font-size: 1.2rem; color: var(--text); letter-spacing: -0.02em; }
+  .nav-logo span { color: var(--accent); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--text); }
+
+  .hero { min-height: 100vh; display: flex; align-items: center; padding: 6rem 3rem 3rem; position: relative; overflow: hidden; }
+  .hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 60% 60% at 70% 50%, rgba(91,76,245,0.15) 0%, transparent 70%), radial-gradient(ellipse 40% 40% at 20% 80%, rgba(0,201,167,0.1) 0%, transparent 60%); pointer-events: none; }
+  .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; max-width: 1100px; margin: 0 auto; width: 100%; }
+  .hero-tag { display: inline-flex; align-items: center; gap: 8px; background: rgba(91,76,245,0.15); border: 1px solid rgba(91,76,245,0.3); border-radius: 100px; padding: 0.4rem 1rem; font-size: 0.8rem; color: #A89FF8; margin-bottom: 1.5rem; }
+  .hero-tag::before { content: ''; width: 7px; height: 7px; background: var(--accent2); border-radius: 50%; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
+  .hero h1 { font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; line-height: 1.05; letter-spacing: -0.03em; margin-bottom: 1.5rem; }
+  .hero h1 .line2 { color: var(--accent); }
+  .hero p { color: var(--muted); font-size: 1.05rem; max-width: 460px; margin-bottom: 2.5rem; }
+  .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-primary { background: var(--accent); color: white; padding: 0.8rem 1.8rem; border-radius: 100px; text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 20px rgba(91,76,245,0.4); }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(91,76,245,0.5); }
+  .btn-secondary { background: transparent; color: var(--text); padding: 0.8rem 1.8rem; border-radius: 100px; text-decoration: none; font-weight: 500; font-size: 0.95rem; border: 1px solid var(--border); transition: border-color 0.2s; }
+  .btn-secondary:hover { border-color: rgba(255,255,255,0.3); }
+  .hero-visual { display: flex; justify-content: center; }
+  .avatar-ring { width: 260px; height: 260px; border-radius: 50%; border: 2px solid rgba(91,76,245,0.3); display: flex; align-items: center; justify-content: center; position: relative; }
+  .avatar-ring::before { content: ''; position: absolute; inset: -12px; border-radius: 50%; border: 1px dashed rgba(91,76,245,0.2); animation: spin 20s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .avatar-inner { width: 220px; height: 220px; border-radius: 50%; background: linear-gradient(135deg, rgba(91,76,245,0.3), rgba(0,201,167,0.3)); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 5rem; font-weight: 800; color: rgba(255,255,255,0.9); }
+  .float-badge { position: absolute; background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 0.6rem 1rem; font-size: 0.78rem; font-weight: 500; white-space: nowrap; }
+  .float-badge.top { top: 10px; right: -30px; }
+  .float-badge.bottom { bottom: 30px; left: -40px; }
+  .float-badge .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+  .dot-green { background: var(--accent2); }
+  .dot-purple { background: var(--accent); }
+
+  section { padding: 6rem 3rem; max-width: 1100px; margin: 0 auto; }
+  .section-label { font-size: 0.8rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem; }
+  .section-title { font-family: var(--font-display); font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 3rem; }
+  .divider { width: 100%; height: 1px; background: var(--border); margin: 0 3rem; max-width: calc(100% - 6rem); }
+
+  .about-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 4rem; align-items: start; }
+  .about-text p { color: var(--muted); margin-bottom: 1.2rem; }
+  .about-text p strong { color: var(--text); font-weight: 500; }
+  .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 1.4rem; }
+  .stat-num { font-family: var(--font-display); font-size: 2rem; font-weight: 800; color: var(--accent); }
+  .stat-label { font-size: 0.82rem; color: var(--muted); margin-top: 0.3rem; }
+
+  .exp-list { display: flex; flex-direction: column; gap: 0; }
+  .exp-item { display: grid; grid-template-columns: 160px 1fr; gap: 2rem; padding: 2rem 0; border-bottom: 1px solid var(--border); }
+  .exp-item:last-child { border-bottom: none; }
+  .exp-date { font-size: 0.85rem; color: var(--muted); padding-top: 0.15rem; }
+  .exp-content h3 { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; margin-bottom: 0.3rem; }
+  .exp-company { font-size: 0.88rem; color: var(--accent2); margin-bottom: 0.8rem; font-weight: 500; }
+  .exp-content p { font-size: 0.92rem; color: var(--muted); line-height: 1.65; }
+  .exp-tag { display: inline-block; background: rgba(91,76,245,0.1); border: 1px solid rgba(91,76,245,0.25); color: #A89FF8; border-radius: 100px; padding: 0.2rem 0.7rem; font-size: 0.75rem; margin: 0.6rem 0.3rem 0 0; }
+
+  .proj-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+  .proj-card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 1.8rem; transition: border-color 0.2s, transform 0.2s; }
+  .proj-card:hover { border-color: rgba(91,76,245,0.4); transform: translateY(-3px); }
+  .proj-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; margin-bottom: 1.2rem; }
+  .proj-icon.purple { background: rgba(91,76,245,0.15); }
+  .proj-icon.teal { background: rgba(0,201,167,0.15); }
+  .proj-icon.red { background: rgba(255,107,107,0.15); }
+  .proj-card h3 { font-family: var(--font-display); font-size: 1.05rem; font-weight: 700; margin-bottom: 0.6rem; }
+  .proj-card p { font-size: 0.88rem; color: var(--muted); line-height: 1.65; margin-bottom: 1.2rem; }
+  .proj-stack { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .stack-tag { background: var(--surface2); border: 1px solid var(--border); color: var(--muted); border-radius: 6px; padding: 0.15rem 0.55rem; font-size: 0.75rem; }
+
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; }
+  .skill-group { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; }
+  .skill-group h3 { font-size: 0.82rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
+  .skill-item { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.9rem; }
+  .skill-item:last-child { margin-bottom: 0; }
+  .skill-name { font-size: 0.9rem; color: var(--text); }
+  .skill-bar { width: 80px; height: 4px; background: var(--surface2); border-radius: 100px; overflow: hidden; }
+  .skill-fill { height: 100%; border-radius: 100px; background: linear-gradient(90deg, var(--accent), var(--accent2)); }
+
+  .contact-inner { background: var(--surface); border: 1px solid var(--border); border-radius: 24px; padding: 3.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+  .contact-left h2 { font-family: var(--font-display); font-size: 2rem; font-weight: 800; margin-bottom: 1rem; }
+  .contact-left p { color: var(--muted); font-size: 0.95rem; }
+  .contact-links { display: flex; flex-direction: column; gap: 1rem; }
+  .contact-link { display: flex; align-items: center; gap: 1rem; padding: 1rem 1.2rem; background: var(--surface2); border: 1px solid var(--border); border-radius: 14px; text-decoration: none; color: var(--text); transition: border-color 0.2s; }
+  .contact-link:hover { border-color: rgba(91,76,245,0.4); }
+  .contact-link-icon { width: 36px; height: 36px; border-radius: 10px; background: rgba(91,76,245,0.15); display: flex; align-items: center; justify-content: center; font-size: 1rem; }
+  .contact-link-text { font-size: 0.88rem; color: var(--muted); }
+  .contact-link-val { font-size: 0.92rem; font-weight: 500; }
+
+  footer { text-align: center; padding: 2rem; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.82rem; }
+
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: none; }
+
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .hero { padding: 5rem 1.5rem 3rem; }
+    .hero-grid { grid-template-columns: 1fr; }
+    .hero-visual { display: none; }
+    section { padding: 4rem 1.5rem; }
+    .about-grid, .exp-item, .contact-inner { grid-template-columns: 1fr; }
+    .exp-item { gap: 0.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">tiff<span>.</span></div>
+  <ul class="nav-links">
+    <li><a href="#about">about</a></li>
+    <li><a href="#experience">experience</a></li>
+    <li><a href="#projects">projects</a></li>
+    <li><a href="#skills">skills</a></li>
+    <li><a href="#contact">contact</a></li>
+  </ul>
+</nav>
+
+<section class="hero" style="padding-top:0; max-width:100%; padding-left:0; padding-right:0;">
+  <div class="hero-bg"></div>
+  <div class="hero-grid">
+    <div>
+      <div class="hero-tag">Open to work · Toronto, ON</div>
+      <h1>Hi, I'm Tiff.<br><span class="line2">Data tells stories.</span><br>I translate them.</h1>
+      <p>Master's in AI & Machine Learning (Schulich) · BI & Analytics · Retail · Finance. Turning messy data into decisions people actually use.</p>
+      <div class="hero-btns">
+        <a href="#projects" class="btn-primary">View my work</a>
+        <a href="#contact" class="btn-secondary">Get in touch</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div style="position:relative;">
+        <div class="avatar-ring">
+          <div class="avatar-inner">TG</div>
+        </div>
+        <div class="float-badge top"><span class="dot dot-green"></span>Available for roles</div>
+        <div class="float-badge bottom"><span class="dot dot-purple"></span>MMAI · Schulich</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="about" class="fade-up">
+  <div class="section-label">about me</div>
+  <div class="section-title">Analytical by nature,<br>curious by habit.</div>
+  <div class="about-grid">
+    <div class="about-text">
+      <p>I'm a data analyst and BI specialist based in <strong>Toronto</strong>, with a Master's in AI & Machine Learning from <strong>Schulich School of Business</strong> and a CS undergrad from <strong>UBC</strong>.</p>
+      <p>I've built dashboards that drove real business outcomes — at DotCompass, the KPI dashboards I designed across regional sales, instructor quality, and sales rep performance contributed to a <strong>350% increase in course sales</strong>.</p>
+      <p>I care about retail analytics, finance BI, and making data legible for the people who need it most. I'm most energized when the work connects to something <strong>real and everyday</strong> — the kind of data that shapes how people shop, invest, and grow.</p>
+    </div>
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-num">350%</div>
+        <div class="stat-label">Sales growth tied to KPI dashboards</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">3+</div>
+        <div class="stat-label">End-to-end BI dashboards built</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">MMAI</div>
+        <div class="stat-label">Schulich School of Business</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">UBC</div>
+        <div class="stat-label">B.Sc. Computer Science</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="experience" class="fade-up">
+  <div class="section-label">experience</div>
+  <div class="section-title">Where I've worked.</div>
+  <div class="exp-list">
+    <div class="exp-item">
+      <div class="exp-date">2023 – 2024</div>
+      <div class="exp-content">
+        <h3>BI & Data Analyst</h3>
+        <div class="exp-company">DotCompass</div>
+        <p>Built three KPI dashboards covering regional sales performance, instructor quality metrics, and individual sales rep analytics. Collaborated with stakeholders to define KPIs and translate business questions into data models. Contributed to a 350% increase in course sales through improved data visibility.</p>
+        <span class="exp-tag">Tableau / Power BI</span>
+        <span class="exp-tag">SQL</span>
+        <span class="exp-tag">KPI Design</span>
+        <span class="exp-tag">Stakeholder Mgmt</span>
+      </div>
+    </div>
+    <div class="exp-item">
+      <div class="exp-date">2023</div>
+      <div class="exp-content">
+        <h3>AI/ML Capstone Analyst</h3>
+        <div class="exp-company">RBC · Schulich Capstone</div>
+        <p>Industry capstone project with RBC focused on AI and machine learning applications. Developed predictive models and data pipelines, translating financial data into actionable analytical outputs for business stakeholders.</p>
+        <span class="exp-tag">Python</span>
+        <span class="exp-tag">Machine Learning</span>
+        <span class="exp-tag">Financial Data</span>
+        <span class="exp-tag">Pandas / NumPy</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="projects" class="fade-up">
+  <div class="section-label">projects</div>
+  <div class="section-title">Work I'm proud of.</div>
+  <div class="proj-grid">
+    <div class="proj-card">
+      <div class="proj-icon purple">📊</div>
+      <h3>Sales KPI Dashboard Suite</h3>
+      <p>Three interconnected dashboards for DotCompass: regional sales, instructor quality, and sales rep performance. Enabled data-driven coaching and contributed to 350% sales growth.</p>
+      <div class="proj-stack">
+        <span class="stack-tag">Tableau</span>
+        <span class="stack-tag">SQL</span>
+        <span class="stack-tag">Data Modeling</span>
+      </div>
+    </div>
+    <div class="proj-card">
+      <div class="proj-icon teal">🛒</div>
+      <h3>Consumer Recommendation Model</h3>
+      <p>ML-based product recommendation engine built for retail analytics use case. Explored collaborative filtering and content-based approaches for personalized consumer experiences.</p>
+      <div class="proj-stack">
+        <span class="stack-tag">Python</span>
+        <span class="stack-tag">Scikit-learn</span>
+        <span class="stack-tag">Pandas</span>
+      </div>
+    </div>
+    <div class="proj-card">
+      <div class="proj-icon red">🏪</div>
+      <h3>Walmart Canada Product Design Case</h3>
+      <p>Strategic product design analysis for Walmart Canada. Applied data-driven frameworks to evaluate product placement, pricing strategy, and customer journey optimization.</p>
+      <div class="proj-stack">
+        <span class="stack-tag">Retail Analytics</span>
+        <span class="stack-tag">Strategy</span>
+        <span class="stack-tag">Product Design</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="skills" class="fade-up">
+  <div class="section-label">skills</div>
+  <div class="section-title">Tools of the trade.</div>
+  <div class="skills-grid">
+    <div class="skill-group">
+      <h3>SQL & Databases</h3>
+      <div class="skill-item"><span class="skill-name">SQL / PostgreSQL</span><div class="skill-bar"><div class="skill-fill" style="width:90%"></div></div></div>
+      <div class="skill-item"><span class="skill-name">BigQuery / GCP</span><div class="skill-bar"><div class="skill-fill" style="width:70%"></div></div></div>
+      <div class="skill-item"><span class="skill-name">Window Functions</span><div class="skill-bar"><div class="skill-fill" style="width:88%"></div></div></div>
+      <div class="skill-item"><span class="skill-name">CTEs & Subqueries</span><div class="skill-bar"><div class="skill-fill" style="width:85%"></div></div></div>
+    </div>
+    <div class="skill-group">
+      <h3>Python & Analytics</h3>
+      <div class="skill-item"><span class="skill-name">Python / Pandas</span><div class="skill-bar"><div class="skill-fill" style="width:85%"></div></div></div>
+      <div class="skill-item"><span class="skill-name">NumPy</span><div class="skill-bar"><div class="skill-fill" style="width:80%"></div></div></div>
+      <div class="skill-item"><span class="skill-name">Scikit-learn</span><div class="skill-bar"><div class="skill-fill" style="width:72%"></div></div></div>
+      <div class="skill-item"><span class="skill-name">Data Visualization</span><div class="skill-bar"><div class="skill-fill" style="width:88%"></div></div></div>
+    </div>
+    <div class="skill-group">
+      <h3>BI & Reporting</h3>
+      <div class="skill-item"><span class="skill-name">Tableau</span><div class="skill-bar"><div class="skill-fill" style="width:88%"></div></div></div>
+      <div class="skill-item"><span class="skill-name">Power BI</span><div class="skill-bar"><div class="skill-fill" style="width:80%"></div></div></div>
+      <div class="skill-item"><span class="skill-name">MicroStrategy</span><div class="skill-bar"><div class="skill-fill" style="width:55%"></div></div></div>
+      <div class="skill-item"><span class="skill-name">KPI Design</span><div class="skill-bar"><div class="skill-fill" style="width:90%"></div></div></div>
+    </div>
+    <div class="skill-group">
+      <h3>Domain</h3>
+      <div class="skill-item"><span class="skill-name">Retail Analytics</span><div class="skill-bar"><div class="skill-fill" style="width:88%"></div></div></div>
+      <div class="skill-item"><span class="skill-name">Finance BI</span><div class="skill-bar"><div class="skill-fill" style="width:80%"></div></div></div>
+      <div class="skill-item"><span class="skill-name">Sales Operations</span><div class="skill-bar"><div class="skill-fill" style="width:82%"></div></div></div>
+      <div class="skill-item"><span class="skill-name">Stakeholder Mgmt</span><div class="skill-bar"><div class="skill-fill" style="width:85%"></div></div></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="contact" class="fade-up">
+  <div class="section-label">contact</div>
+  <div class="contact-inner">
+    <div class="contact-left">
+      <h2>Let's work together.</h2>
+      <p style="color:var(--muted); margin-top:0.8rem;">Open to full-time roles in data analytics, BI, and finance insights — especially in retail and financial services. Based in Toronto.</p>
+    </div>
+    <div class="contact-links">
+      <a href="mailto:go.tianfei@gmail.com" class="contact-link">
+        <div class="contact-link-icon">✉️</div>
+        <div>
+          <div class="contact-link-text">Email</div>
+          <div class="contact-link-val">go.tianfei@gmail.com</div>
+        </div>
+      </a>
+      <a href="https://www.linkedin.com/in/tfgong" class="contact-link">
+        <div class="contact-link-icon">💼</div>
+        <div>
+          <div class="contact-link-text">LinkedIn</div>
+          <div class="contact-link-val">linkedin.com/in/tfgong</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Built with HTML/CSS · Hosted on GitHub Pages · tiffgong.xyz</p>
+</footer>
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
